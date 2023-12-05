@@ -9,14 +9,10 @@ import Foundation
 
 /// Service class responsible for fetching cryptocurrency data from the CryptoCompare API.
 class CryptoCompareService {
-    enum APIConstants {
-        static let baseUrlString = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms="
-        static let apiKey = APIKey
-    }
-
-    /// Fetches the current Bitcoin price for a given currency.
+    /// Fetches the current Bitcoin price for a selected currency.
     /// Documentation: https://min-api.cryptocompare.com/documentation?key=Price&cat=SingleSymbolPriceEndpoint
-    /// - Example Respond:  {"CNY":163338.95}
+    ///
+    /// - Example Network Respond:  {"CNY":163338.95}
     ///
     /// - Parameters:
     ///   - currency: The currency for which to fetch the Bitcoin price.
@@ -61,4 +57,11 @@ class CryptoCompareService {
             }
         }.resume()
     }
+}
+
+// MARK: - Constants:
+
+enum APIConstants {
+    static let baseUrlString = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms="
+    static let apiKey = APIKey
 }

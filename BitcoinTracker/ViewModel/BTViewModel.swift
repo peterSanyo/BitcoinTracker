@@ -39,9 +39,10 @@ class APIViewModel: ObservableObject {
 
     var timer: Timer?
     
+    /// fetches the current Bitcoin exchange rate and starts a timer to trigger function every 10 seconds
+    ///  Usecase: .onAppear{ }
     func startFetchingPrice() {
         withAnimation {
-            // Call immediately and then start the timer
             fetchCurrentBitcoinPrice()
             
             timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
@@ -50,10 +51,14 @@ class APIViewModel: ObservableObject {
         }
     }
 
+    ///  invalidates the timer to trigger the function repeatedly
+    ///  Usecase: .onDissappear{ }
     func stopFetchingPrice() {
         timer?.invalidate()
         timer = nil
     }
+    
+    // MARK: Currency Change
     
     /// Changes the selected currency and fetches the latest rate.
     /// - Parameter newCurrency: The new currency to be set.
