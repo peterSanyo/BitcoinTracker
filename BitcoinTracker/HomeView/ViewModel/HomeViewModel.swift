@@ -43,10 +43,9 @@ class HomeViewModel: ObservableObject {
     func startFetchingPrice() {
         withAnimation {
             fetchCurrentBitcoinPrice()
-                
-            timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
-                self?.fetchCurrentBitcoinPrice()
-            }
+        }
+        timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
+            self?.fetchCurrentBitcoinPrice()
         }
     }
 

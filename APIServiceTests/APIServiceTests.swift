@@ -14,11 +14,11 @@ final class APIServiceTests: XCTestCase {
     /// **It uses an actual network call to the API, which means the test's success is dependent on network availability and the API's response.**
     func testFetchCurrentBitcoinPrice_Success() {
         // Arrange
-        let service = CryptoCompareService()
+        let model = BitcoinTrackerModel()
         let expectation = self.expectation(description: "Fetch Bitcoin Price")
 
         // Act
-        service.fetchCurrentBitcoinPrice(currency: .eur) { result in
+        model.fetchCurrentBitcoinPrice(currency: .eur) { result in
             if case .success(let rate) = result {
                 // Assert
                 XCTAssertTrue(rate > 20_000, "Fetched rate should be greater than 20,000.")
