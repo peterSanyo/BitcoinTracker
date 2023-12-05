@@ -67,6 +67,7 @@
 				459366452B1F5A0900E78B67 /* API */,
 				459366482B1F5A3E00E78B67 /* Model */,
 				459366382B1F599600E78B67 /* Assets.xcassets */,
+				4593664E2B1F5B4300E78B67 /* dev.swift */,
 				4593663A2B1F599600E78B67 /* Preview Content */,
 			);
 			path = BitcoinTracker;
@@ -101,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				459366492B1F5A5000E78B67 /* ExchangeCurrency.swift */,
-				4593664E2B1F5B4300E78B67 /* dev.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
