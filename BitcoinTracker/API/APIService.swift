@@ -11,7 +11,7 @@ import Foundation
 class CryptoCompareService {
     enum APIConstants {
         static let baseUrlString = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms="
-        static let apiKey = "CRYPTOCOMPARE_API_KEY"
+        static let apiKey = APIKey
     }
 
     /// Fetches the current Bitcoin price for a given currency.
