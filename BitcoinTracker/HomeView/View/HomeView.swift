@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject var viewModel = APIViewModel()
+    @StateObject var viewModel = HomeViewModel()
 
     var body: some View {
         VStack {
+            
             if viewModel.isLoading {
                 ProgressView()
-            } else if let price = viewModel.currentRate {
+            } else
+            if let price = viewModel.currentRate {
                 Text("Bitcoin Price: \(price) \(viewModel.selectedCurrency.currencyOption)")
             } else if let errorMessage = viewModel.errorMessage {
                 Text("Error: \(errorMessage)")
@@ -26,8 +28,8 @@ struct HomeView: View {
                 }
             }
             .pickerStyle(SegmentedPickerStyle())
-            .onChange(of: viewModel.selectedCurrency) { _ in
-                viewModel.fetchCurrentBitcoinPrice()
+            .onChange(of: viewModel.selectedCurrency) { newCurrency in
+                viewModel.changeCurrency(to: newCurrency)
             }
             .padding()
         }

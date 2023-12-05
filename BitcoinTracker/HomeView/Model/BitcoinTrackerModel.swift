@@ -1,5 +1,5 @@
 //
-//  APIService.swift
+//  BitcoinTrackerModel.swift
 //  BitcoinTracker
 //
 //  Created by Péter Sanyó on 05.12.23.
@@ -7,8 +7,9 @@
 
 import Foundation
 
-/// Service class responsible for fetching cryptocurrency data from the CryptoCompare API.
-class CryptoCompareService {
+/// model for handling the logic of cryptocurrency data retrieval.
+class BitcoinTrackerModel: ObservableObject {
+    
     /// Fetches the current Bitcoin price for a selected currency.
     /// Documentation: https://min-api.cryptocompare.com/documentation?key=Price&cat=SingleSymbolPriceEndpoint
     ///

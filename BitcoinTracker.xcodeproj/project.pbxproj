@@ -8,15 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		459366352B1F599500E78B67 /* BitcoinTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366342B1F599500E78B67 /* BitcoinTrackerApp.swift */; };
-		459366372B1F599500E78B67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366362B1F599500E78B67 /* ContentView.swift */; };
 		459366392B1F599600E78B67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 459366382B1F599600E78B67 /* Assets.xcassets */; };
 		4593663C2B1F599600E78B67 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4593663B2B1F599600E78B67 /* Preview Assets.xcassets */; };
 		459366432B1F59C400E78B67 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366422B1F59C400E78B67 /* HomeView.swift */; };
-		459366472B1F5A2800E78B67 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366462B1F5A2800E78B67 /* APIService.swift */; };
 		4593664A2B1F5A5000E78B67 /* ExchangeCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366492B1F5A5000E78B67 /* ExchangeCurrency.swift */; };
-		4593664D2B1F5A9800E78B67 /* BTViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593664C2B1F5A9800E78B67 /* BTViewModel.swift */; };
 		4593664F2B1F5B4300E78B67 /* dev.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593664E2B1F5B4300E78B67 /* dev.swift */; };
 		459366572B1F649800E78B67 /* APIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366562B1F649800E78B67 /* APIServiceTests.swift */; };
+		459366602B1F911E00E78B67 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593665F2B1F911E00E78B67 /* HomeViewModel.swift */; };
+		459366662B1F93FE00E78B67 /* BitcoinTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366652B1F93FE00E78B67 /* BitcoinTrackerModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,16 +31,15 @@
 /* Begin PBXFileReference section */
 		459366312B1F599500E78B67 /* BitcoinTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitcoinTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		459366342B1F599500E78B67 /* BitcoinTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinTrackerApp.swift; sourceTree = "<group>"; };
-		459366362B1F599500E78B67 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		459366382B1F599600E78B67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4593663B2B1F599600E78B67 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		459366422B1F59C400E78B67 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		459366462B1F5A2800E78B67 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		459366492B1F5A5000E78B67 /* ExchangeCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeCurrency.swift; sourceTree = "<group>"; };
-		4593664C2B1F5A9800E78B67 /* BTViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTViewModel.swift; sourceTree = "<group>"; };
 		4593664E2B1F5B4300E78B67 /* dev.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dev.swift; sourceTree = "<group>"; };
 		459366542B1F649800E78B67 /* APIServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = APIServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		459366562B1F649800E78B67 /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
+		4593665F2B1F911E00E78B67 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		459366652B1F93FE00E78B67 /* BitcoinTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinTrackerModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,10 +82,9 @@
 			isa = PBXGroup;
 			children = (
 				459366342B1F599500E78B67 /* BitcoinTrackerApp.swift */,
-				459366442B1F59E800E78B67 /* Views */,
-				4593664B2B1F5A6C00E78B67 /* ViewModel */,
-				459366452B1F5A0900E78B67 /* API */,
+				4593665E2B1F90F200E78B67 /* HomeView */,
 				459366482B1F5A3E00E78B67 /* Model */,
+				4593665D2B1F90A900E78B67 /* ViewComponents */,
 				459366382B1F599600E78B67 /* Assets.xcassets */,
 				4593664E2B1F5B4300E78B67 /* dev.swift */,
 				4593663A2B1F599600E78B67 /* Preview Content */,
@@ -103,23 +100,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		459366442B1F59E800E78B67 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				459366362B1F599500E78B67 /* ContentView.swift */,
-				459366422B1F59C400E78B67 /* HomeView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		459366452B1F5A0900E78B67 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				459366462B1F5A2800E78B67 /* APIService.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
 		459366482B1F5A3E00E78B67 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,20 +108,53 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		4593664B2B1F5A6C00E78B67 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				4593664C2B1F5A9800E78B67 /* BTViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		459366552B1F649800E78B67 /* APIServiceTests */ = {
 			isa = PBXGroup;
 			children = (
 				459366562B1F649800E78B67 /* APIServiceTests.swift */,
 			);
 			path = APIServiceTests;
+			sourceTree = "<group>";
+		};
+		4593665D2B1F90A900E78B67 /* ViewComponents */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewComponents;
+			sourceTree = "<group>";
+		};
+		4593665E2B1F90F200E78B67 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				459366612B1F925600E78B67 /* View */,
+				459366622B1F929300E78B67 /* ViewModel */,
+				459366632B1F934500E78B67 /* Model */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		459366612B1F925600E78B67 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				459366422B1F59C400E78B67 /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		459366622B1F929300E78B67 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4593665F2B1F911E00E78B67 /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		459366632B1F934500E78B67 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				459366652B1F93FE00E78B67 /* BitcoinTrackerModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,10 +257,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4593664D2B1F5A9800E78B67 /* BTViewModel.swift in Sources */,
+				459366662B1F93FE00E78B67 /* BitcoinTrackerModel.swift in Sources */,
 				459366432B1F59C400E78B67 /* HomeView.swift in Sources */,
-				459366372B1F599500E78B67 /* ContentView.swift in Sources */,
-				459366472B1F5A2800E78B67 /* APIService.swift in Sources */,
+				459366602B1F911E00E78B67 /* HomeViewModel.swift in Sources */,
 				459366352B1F599500E78B67 /* BitcoinTrackerApp.swift in Sources */,
 				4593664F2B1F5B4300E78B67 /* dev.swift in Sources */,
 				4593664A2B1F5A5000E78B67 /* ExchangeCurrency.swift in Sources */,
