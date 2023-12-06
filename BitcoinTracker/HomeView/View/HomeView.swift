@@ -12,7 +12,6 @@ struct HomeView: View {
 
     var body: some View {
         VStack {
-            
             if viewModel.isLoading {
                 ProgressView()
             } else
@@ -32,6 +31,26 @@ struct HomeView: View {
                 viewModel.changeCurrency(to: newCurrency)
             }
             .padding()
+
+            Button("Fetch Historical Data") {
+                Task {
+                    await viewModel.fetchHistoricalData()
+                }
+            }
+
+            if viewModel.isHistoricalDataLoading {
+                ProgressView()
+            } else if !viewModel.historicalData.isEmpty {
+                List(viewModel.historicalData, id: \.time) { data in
+                    HStack {
+                        Text("Date: \(convertTimestampToDate(TimeInterval(data.time)))")
+                        Spacer()
+                        Text("Open: \(data.open), Close: \(data.close)")
+                    }
+                }
+            } else {
+                Text("No historical data available.")
+            }
         }
         .onAppear {
             viewModel.startFetchingPrice()
@@ -39,6 +58,13 @@ struct HomeView: View {
         .onDisappear {
             viewModel.stopFetchingPrice()
         }
+    }
+
+    private func convertTimestampToDate(_ timestamp: TimeInterval) -> String {
+        let date = Date(timeIntervalSince1970: timestamp)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date)
     }
 }
 

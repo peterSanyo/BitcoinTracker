@@ -16,6 +16,7 @@
 		459366572B1F649800E78B67 /* APIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366562B1F649800E78B67 /* APIServiceTests.swift */; };
 		459366602B1F911E00E78B67 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593665F2B1F911E00E78B67 /* HomeViewModel.swift */; };
 		459366662B1F93FE00E78B67 /* BitcoinTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366652B1F93FE00E78B67 /* BitcoinTrackerModel.swift */; };
+		459366682B1FD42C00E78B67 /* HistoricalBitcoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366672B1FD42C00E78B67 /* HistoricalBitcoinData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		459366562B1F649800E78B67 /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
 		4593665F2B1F911E00E78B67 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		459366652B1F93FE00E78B67 /* BitcoinTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinTrackerModel.swift; sourceTree = "<group>"; };
+		459366672B1FD42C00E78B67 /* HistoricalBitcoinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalBitcoinData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				459366492B1F5A5000E78B67 /* ExchangeCurrency.swift */,
+				459366672B1FD42C00E78B67 /* HistoricalBitcoinData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				459366352B1F599500E78B67 /* BitcoinTrackerApp.swift in Sources */,
 				4593664F2B1F5B4300E78B67 /* dev.swift in Sources */,
 				4593664A2B1F5A5000E78B67 /* ExchangeCurrency.swift in Sources */,
+				459366682B1FD42C00E78B67 /* HistoricalBitcoinData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
