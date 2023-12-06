@@ -10,31 +10,44 @@ import SwiftUI
 class HomeViewModel: ObservableObject {
     private var bitcoinTrackerModel = BitcoinTrackerModel()
     
-    @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     @Published var currentRate: Double?
     @Published var selectedCurrency: ExchangeCurrency = .eur
     
-    /// Fetches the current Bitcoin price for the selected currency.
     func fetchCurrentBitcoinPrice() {
-        isLoading = true
-        errorMessage = nil
-        
+        getCachedBitcoinRate()
+
         bitcoinTrackerModel.fetchCurrentBitcoinPrice(currency: selectedCurrency) { [weak self] result in
             DispatchQueue.main.async {
-                self?.isLoading = false
-                
                 switch result {
                 case .success(let rate):
                     self?.currentRate = rate
+                    UserDefaults.standard.setLastBitcoinRate(rate)
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
+                    if self?.currentRate == nil {
+                        self?.currentRate = nil
+                    }
                 }
             }
         }
     }
     
-    // MARK: -  Continously updating the exchange rate
+    // MARK: - Caching
+    
+    func getCachedBitcoinRate() {
+        if let cachedRate = UserDefaults.standard.getLastBitcoinRate() {
+            currentRate = cachedRate
+        }
+    }
+    
+    func getCachedHistoricalData() {
+        if let cachedData = UserDefaults.standard.getLastHistoricalData() {
+            historicalData = cachedData
+        }
+    }
+    
+    // MARK: -  Continous updates of current exchange rate
     
     var timer: Timer?
     
@@ -72,11 +85,13 @@ class HomeViewModel: ObservableObject {
         
     func fetchHistoricalData() async {
         isHistoricalDataLoading = true
+        getCachedHistoricalData()
         do {
             let data = try await bitcoinTrackerModel.fetchHistoricalBitcoinData(currency: selectedCurrency)
             DispatchQueue.main.async {
                 self.historicalData = data
                 self.isHistoricalDataLoading = false
+                UserDefaults.standard.setLastHistoricalData(data)
             }
         } catch {
             DispatchQueue.main.async {
@@ -84,5 +99,6 @@ class HomeViewModel: ObservableObject {
                 self.isHistoricalDataLoading = false
             }
         }
+        
     }
 }

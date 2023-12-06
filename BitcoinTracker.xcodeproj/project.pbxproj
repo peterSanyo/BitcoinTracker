@@ -17,6 +17,8 @@
 		459366602B1F911E00E78B67 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593665F2B1F911E00E78B67 /* HomeViewModel.swift */; };
 		459366662B1F93FE00E78B67 /* BitcoinTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366652B1F93FE00E78B67 /* BitcoinTrackerModel.swift */; };
 		459366682B1FD42C00E78B67 /* HistoricalBitcoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366672B1FD42C00E78B67 /* HistoricalBitcoinData.swift */; };
+		4593666E2B21248700E78B67 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593666D2B21248700E78B67 /* DataController.swift */; };
+		459366702B212C8F00E78B67 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593666F2B212C8F00E78B67 /* UserDefaults.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		4593665F2B1F911E00E78B67 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		459366652B1F93FE00E78B67 /* BitcoinTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinTrackerModel.swift; sourceTree = "<group>"; };
 		459366672B1FD42C00E78B67 /* HistoricalBitcoinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalBitcoinData.swift; sourceTree = "<group>"; };
+		4593666D2B21248700E78B67 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		4593666F2B212C8F00E78B67 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,8 @@
 				459366342B1F599500E78B67 /* BitcoinTrackerApp.swift */,
 				4593665E2B1F90F200E78B67 /* HomeView */,
 				459366482B1F5A3E00E78B67 /* Model */,
+				4593666F2B212C8F00E78B67 /* UserDefaults.swift */,
+				4593666C2B21246B00E78B67 /* CoreData */,
 				4593665D2B1F90A900E78B67 /* ViewComponents */,
 				459366382B1F599600E78B67 /* Assets.xcassets */,
 				4593664E2B1F5B4300E78B67 /* dev.swift */,
@@ -158,6 +164,14 @@
 				459366652B1F93FE00E78B67 /* BitcoinTrackerModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		4593666C2B21246B00E78B67 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				4593666D2B21248700E78B67 /* DataController.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +279,8 @@
 				459366602B1F911E00E78B67 /* HomeViewModel.swift in Sources */,
 				459366352B1F599500E78B67 /* BitcoinTrackerApp.swift in Sources */,
 				4593664F2B1F5B4300E78B67 /* dev.swift in Sources */,
+				459366702B212C8F00E78B67 /* UserDefaults.swift in Sources */,
+				4593666E2B21248700E78B67 /* DataController.swift in Sources */,
 				4593664A2B1F5A5000E78B67 /* ExchangeCurrency.swift in Sources */,
 				459366682B1FD42C00E78B67 /* HistoricalBitcoinData.swift in Sources */,
 			);

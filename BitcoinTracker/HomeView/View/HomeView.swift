@@ -12,13 +12,12 @@ struct HomeView: View {
 
     var body: some View {
         VStack {
-            if viewModel.isLoading {
-                ProgressView()
-            } else
             if let price = viewModel.currentRate {
                 Text("Bitcoin Price: \(price) \(viewModel.selectedCurrency.currencyOption)")
             } else if let errorMessage = viewModel.errorMessage {
                 Text("Error: \(errorMessage)")
+            } else {
+                Text("No data available.")
             }
 
             Picker("Currency", selection: $viewModel.selectedCurrency) {
