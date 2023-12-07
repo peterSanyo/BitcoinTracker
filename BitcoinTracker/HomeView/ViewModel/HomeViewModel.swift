@@ -9,10 +9,15 @@ import CoreData
 import SwiftUI
 
 class HomeViewModel: ObservableObject {
-    private var bitcoinTrackerModel = BitcoinTrackerModel()
-    
+    private var bitcoinTrackerModel: BitcoinTrackerModel
     private var moc: NSManagedObjectContext?
-    init() {}
+
+    init(context: NSManagedObjectContext) {
+        let apiService = APIService()
+        let coreDataService = CoreDataService(context: context)
+        self.bitcoinTrackerModel = BitcoinTrackerModel(apiService: apiService, coreDataService: coreDataService)
+    }
+
     func setManagedObjectContext(_ context: NSManagedObjectContext) {
         moc = context
     }
@@ -28,6 +33,7 @@ class HomeViewModel: ObservableObject {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let rate):
+                    // since it is repeatedly triggered: only overwrite UserDefaults when values changed
                     if self?.currentRate != rate {
                         self?.currentRate = rate
                         UserDefaults.standard.setLastBitcoinRate(rate)
@@ -86,68 +92,17 @@ class HomeViewModel: ObservableObject {
     @Published var isHistoricalDataLoading: Bool = false
         
     func fetchHistoricalData() async {
-        guard let moc = moc else {
-            print("Managed Object Context not set.")
-            return
-        }
-
         isHistoricalDataLoading = true
-        
-        let now = Date()
-        updateLastUpdateTimestamp(now, in: moc)
-
         do {
             let data = try await bitcoinTrackerModel.fetchHistoricalBitcoinData(currency: selectedCurrency)
-            
-            if moc.hasChanges {
-                // Delete old data from Core Data before saving new data
-                let fetchRequest: NSFetchRequest<NSFetchRequestResult> = StoredHistoricalRate.fetchRequest()
-                let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                do {
-                    try moc.execute(deleteRequest)
-                } catch {
-                    print("Error in deleting old records: \(error)")
-                }
-                
-                let now = Date()
-                for rateData in data {
-                    let newRate = StoredHistoricalRate(context: moc)
-                    newRate.lastUpdate = now
-                    newRate.time = Int32(rateData.time)
-                    newRate.high = rateData.high
-                    newRate.low = rateData.low
-                    newRate.open = rateData.open
-                    newRate.close = rateData.close
-                    newRate.volumefrom = rateData.volumefrom
-                    newRate.volumeto = rateData.volumeto
-                }
-                try moc.save()
-                
-                // Important: Save the context after making changes
-                if moc.hasChanges {
-                    try moc.save()
-                }
-                
-                DispatchQueue.main.async {
-                    self.isHistoricalDataLoading = false
-                }
-            }
+            bitcoinTrackerModel.coreDataService.replaceHistoricalRates(rates: data)
         } catch {
             DispatchQueue.main.async {
                 self.errorMessage = error.localizedDescription
-                self.isHistoricalDataLoading = false
             }
         }
-    }
-    
-    private func updateLastUpdateTimestamp(_ date: Date, in context: NSManagedObjectContext) {
-        let fetchRequest: NSFetchRequest<StoredHistoricalRate> = StoredHistoricalRate.fetchRequest()
-        do {
-            let results = try context.fetch(fetchRequest)
-            results.forEach { $0.lastUpdate = date }
-            try context.save()
-        } catch {
-            print("Failed to update lastUpdate timestamp: \(error)")
+        DispatchQueue.main.async {
+            self.isHistoricalDataLoading = false
         }
     }
 }

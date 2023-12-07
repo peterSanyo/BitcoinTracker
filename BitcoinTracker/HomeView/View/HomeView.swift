@@ -10,7 +10,11 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(\.managedObjectContext) var moc
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject var viewModel: HomeViewModel
+
+    init(viewModel: HomeViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     @FetchRequest(
         entity: StoredHistoricalRate.entity(),
@@ -63,15 +67,10 @@ struct HomeView: View {
         .padding()
         .onAppear {
             viewModel.setManagedObjectContext(moc)
-//            viewModel.getCachedHistoricalData()
             viewModel.startFetchingPrice()
         }
         .onDisappear {
             viewModel.stopFetchingPrice()
         }
     }
-}
-
-#Preview {
-    HomeView()
 }

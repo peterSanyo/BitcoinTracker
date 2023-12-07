@@ -20,9 +20,10 @@
 		4593666E2B21248700E78B67 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593666D2B21248700E78B67 /* DataController.swift */; };
 		459366702B212C8F00E78B67 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593666F2B212C8F00E78B67 /* UserDefaults.swift */; };
 		459366732B21C2FB00E78B67 /* BitcoinTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 459366712B21C2FB00E78B67 /* BitcoinTracker.xcdatamodeld */; };
-		4593667E2B21D19200E78B67 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593667D2B21D19200E78B67 /* NetworkManager.swift */; };
 		459366812B21E1C300E78B67 /* StoredHistoricalRate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4593667F2B21E1C300E78B67 /* StoredHistoricalRate+CoreDataClass.swift */; };
 		459366822B21E1C300E78B67 /* StoredHistoricalRate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459366802B21E1C300E78B67 /* StoredHistoricalRate+CoreDataProperties.swift */; };
+		45F5F9A62B21F48E00B8B347 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F5F9A52B21F48E00B8B347 /* APIService.swift */; };
+		45F5F9A92B21FA8800B8B347 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F5F9A82B21FA8800B8B347 /* CoreDataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,9 +52,10 @@
 		4593666D2B21248700E78B67 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		4593666F2B212C8F00E78B67 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		459366722B21C2FB00E78B67 /* BitcoinTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BitcoinTracker.xcdatamodel; sourceTree = "<group>"; };
-		4593667D2B21D19200E78B67 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		4593667F2B21E1C300E78B67 /* StoredHistoricalRate+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoredHistoricalRate+CoreDataClass.swift"; sourceTree = "<group>"; };
 		459366802B21E1C300E78B67 /* StoredHistoricalRate+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoredHistoricalRate+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		45F5F9A52B21F48E00B8B347 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		45F5F9A82B21FA8800B8B347 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				459366342B1F599500E78B67 /* BitcoinTrackerApp.swift */,
 				4593665E2B1F90F200E78B67 /* HomeView */,
 				4593666F2B212C8F00E78B67 /* UserDefaults.swift */,
+				45F5F9A72B21FA7100B8B347 /* Services */,
 				459366482B1F5A3E00E78B67 /* Model */,
 				4593665D2B1F90A900E78B67 /* ViewComponents */,
 				459366382B1F599600E78B67 /* Assets.xcassets */,
@@ -188,10 +191,18 @@
 			isa = PBXGroup;
 			children = (
 				459366492B1F5A5000E78B67 /* ExchangeCurrency.swift */,
-				4593667D2B21D19200E78B67 /* NetworkManager.swift */,
 				459366672B1FD42C00E78B67 /* HistoricalBitcoinData.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		45F5F9A72B21FA7100B8B347 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				45F5F9A52B21F48E00B8B347 /* APIService.swift */,
+				45F5F9A82B21FA8800B8B347 /* CoreDataService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,16 +305,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45F5F9A92B21FA8800B8B347 /* CoreDataService.swift in Sources */,
 				459366662B1F93FE00E78B67 /* BitcoinTrackerModel.swift in Sources */,
 				459366822B21E1C300E78B67 /* StoredHistoricalRate+CoreDataProperties.swift in Sources */,
 				459366732B21C2FB00E78B67 /* BitcoinTracker.xcdatamodeld in Sources */,
 				459366432B1F59C400E78B67 /* HomeView.swift in Sources */,
-				4593667E2B21D19200E78B67 /* NetworkManager.swift in Sources */,
 				459366602B1F911E00E78B67 /* HomeViewModel.swift in Sources */,
 				459366352B1F599500E78B67 /* BitcoinTrackerApp.swift in Sources */,
 				4593664F2B1F5B4300E78B67 /* dev.swift in Sources */,
 				459366702B212C8F00E78B67 /* UserDefaults.swift in Sources */,
 				459366812B21E1C300E78B67 /* StoredHistoricalRate+CoreDataClass.swift in Sources */,
+				45F5F9A62B21F48E00B8B347 /* APIService.swift in Sources */,
 				4593666E2B21248700E78B67 /* DataController.swift in Sources */,
 				4593664A2B1F5A5000E78B67 /* ExchangeCurrency.swift in Sources */,
 				459366682B1FD42C00E78B67 /* HistoricalBitcoinData.swift in Sources */,

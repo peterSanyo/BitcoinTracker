@@ -14,7 +14,7 @@ class APIServiceTests: XCTestCase {
     /// **It uses an actual network call to the API, which means the test's success is dependent on network availability and the API's response.**
     func testFetchCurrentBitcoinPrice_Success() {
         // Arrange
-        let model = BitcoinTrackerModel()
+        let model = APIService()
         let expectation = self.expectation(description: "Fetch Bitcoin Price")
 
         // Act
@@ -34,7 +34,7 @@ class APIServiceTests: XCTestCase {
     /// This test verifies that the `fetchHistoricalBitcoinData` function successfully fetches 14 days of data based on the object count and the covered timeframe of the timeStamps.
     func testFetchHistoricalBitcoinData_Success() async {
         // Arrange
-        let model = BitcoinTrackerModel()
+        let model = APIService()
 
         do {
             // Act

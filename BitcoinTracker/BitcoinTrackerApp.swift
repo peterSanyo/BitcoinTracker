@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct BitcoinTrackerApp: App {
-    @State private var dataController = DataController()
-    
+    let dataController = DataController()
+
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            HomeView(viewModel: HomeViewModel(context: dataController.container.viewContext))
                 .environment(\.managedObjectContext, dataController.container.viewContext)
         }
     }
