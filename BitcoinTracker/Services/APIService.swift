@@ -98,9 +98,6 @@ class APIService {
     /// - Parameter currency: The currency symbol (e.g., USD, EUR) to convert Bitcoin data into referring to `ExchangeCurrency`.
     /// - Returns: An array of `HistoricalRate` data representing daily Bitcoin values.
     /// - Throws: An error if the network request fails or data parsing fails.
-    /// - Note: Uses `async/await` for network requests.
-    /// - API Endpoint: `https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym={currency}&limit=13&toTs={timestamp}`
-    ///   where `fsym` is the cryptocurrency symbol, `tsym` is the currency symbol, `limit` is the number of days, and `toTs` is the Unix timestamp.
     func fetchHistoricalBitcoinData(currency: ExchangeCurrency) async throws -> [HistoricalRate] {
         // Calculate Unix timestamp for 23:59 GMT of yesterday
         let calendar = Calendar.current
