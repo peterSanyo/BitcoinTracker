@@ -16,6 +16,8 @@ class CoreDataService {
         self.moc = context
     }
     
+    // MARK: - Current Bitcoin Price
+    
     /// Replaces the current historical rates with new data.
     ///
     /// updates the timeStamp of lastUpdate
@@ -37,6 +39,8 @@ class CoreDataService {
             }
         }
     }
+    
+    // MARK: - Historical Data
     
     /// Saves new historical rates into Core Data.
     /// - Parameter rates: The array of `HistoricalRate` objects to be saved.
@@ -60,7 +64,7 @@ class CoreDataService {
         }
     }
     
-    /// Updates the last update timestamp for all `StoredHistoricalRate` records.
+    /// Updates the  update timestamp for all `StoredHistoricalRate` records.
     /// - Parameters:
     ///   - date: The current date to set as the last update timestamp.
     ///   - context: The `NSManagedObjectContext` to perform the update.

@@ -5,6 +5,7 @@
 //  Created by Péter Sanyó on 05.12.23.
 //
 
+import Combine
 import CoreData
 import SwiftUI
 
@@ -23,9 +24,13 @@ class HomeViewModel: ObservableObject {
     }
     
     @Published var errorMessage: String? = nil
+    
+    
     @Published var currentRate: Double?
     @Published var selectedCurrency: ExchangeCurrency = .eur
     
+    /// Fetches the current Bitcoin price and updates the `currentRate`.
+    /// Utilizes the `BitcoinTrackerModel` to retrieve the latest rate from the API.
     func fetchCurrentBitcoinPrice() {
         getCachedBitcoinRate()
 
@@ -58,30 +63,31 @@ class HomeViewModel: ObservableObject {
 
     // MARK: -  Continous updates of current exchange rate
     
-    var timer: Timer?
-    
-    /// fetches the current Bitcoin exchange rate and starts a timer to trigger function every 10 seconds
-    ///  Usecase: .onAppear{ }
+    private var priceUpdateSubscription: AnyCancellable?
+
+    /// Starts a timer to continuously fetch the current Bitcoin exchange rate.
+    /// Intended for use when the view appears.
     func startFetchingPrice() {
-        withAnimation {
-            fetchCurrentBitcoinPrice()
-        }
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            self?.fetchCurrentBitcoinPrice()
-        }
+        priceUpdateSubscription = Timer.publish(every: 1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                print("Tick")
+                self?.fetchCurrentBitcoinPrice()
+            }
     }
-    
-    ///  invalidates the timer to trigger the function repeatedly
-    ///  Usecase: .onDissappear{ }
+
+    /// Invalidates the timer that updates the exchange rate.
+    /// Intended for use when the view disappears.
     func stopFetchingPrice() {
-        timer?.invalidate()
-        timer = nil
+        priceUpdateSubscription?.cancel()
+        print("Timer cancelled")
+        priceUpdateSubscription = nil
     }
     
     // MARK: - Currency Change
     
-    /// Changes the selected currency and fetches the latest rate.
-    /// - Parameter newCurrency: The new currency to be set.
+    /// Changes the selected currency and fetches the latest Bitcoin rate.
+    /// - Parameter newCurrency: The new currency to fetch the rate for.
     func changeCurrency(to newCurrency: ExchangeCurrency) {
         selectedCurrency = newCurrency
         fetchCurrentBitcoinPrice()
@@ -90,12 +96,14 @@ class HomeViewModel: ObservableObject {
     // MARK: - Fetching Historical Data
     
     @Published var isHistoricalDataLoading: Bool = false
-        
+    
+    /// Asynchronously fetches historical Bitcoin data and updates Core Data.
+    /// Shows loading state while fetching and updates the `isHistoricalDataLoading` property.
     func fetchHistoricalData() async {
         isHistoricalDataLoading = true
         do {
             let data = try await bitcoinTrackerModel.fetchHistoricalBitcoinData(currency: selectedCurrency)
-            bitcoinTrackerModel.coreDataService.replaceHistoricalRates(rates: data)
+            bitcoinTrackerModel.replaceHistoricalRates(rates: data)
         } catch {
             DispatchQueue.main.async {
                 self.errorMessage = error.localizedDescription
@@ -105,4 +113,5 @@ class HomeViewModel: ObservableObject {
             self.isHistoricalDataLoading = false
         }
     }
+
 }

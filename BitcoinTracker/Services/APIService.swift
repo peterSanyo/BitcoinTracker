@@ -10,6 +10,8 @@ import Foundation
 /// Service class responsible for fetching cryptocurrency data from an external API.
 class APIService {
     
+    // MARK: - Current Bitcoin Price
+
     /// Fetches the current Bitcoin price for a specified currency.
     /// Makes a network request to the CryptoCompare API and retrieves the latest Bitcoin price in the given currency.
     ///
@@ -61,7 +63,8 @@ class APIService {
         }.resume()
     }
 
-    
+    // MARK: - Historical Data
+
     /// Fetches historical Bitcoin data
     /// Asynchronously retrieves daily open, high, low, close, volumefrom, and volumeto data for Bitcoin over the past 14 days.
     ///

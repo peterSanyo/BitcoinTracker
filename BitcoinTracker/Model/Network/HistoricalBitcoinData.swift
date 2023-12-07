@@ -7,8 +7,8 @@
 
 import Foundation
 
-/// `HistoricalDataResponse` decodes the JSON response from the CryptoCompare API.
-/// It follows a nested structure to match the incoming JSON format, ensuring conformance to Codable protocol.
+/// Represents the response structure for historical Bitcoin data from the CryptoCompare API.
+/// This structure decodes the JSON response following the API's nested JSON format.
 struct HistoricalDataResponse: Codable {
     /// `DataContainer` serves as an intermediate layer to match the nested JSON structure.
     /// It contains the array of `HistoricalOHLCV` data, representing individual OHLCV entries.
@@ -30,7 +30,7 @@ struct HistoricalDataResponse: Codable {
     }
 }
 
-/// `HistoricalOHLCV` represents a single data point in the historical Bitcoin data.
+/// `HistoricalRate` represents a single data point in the historical Bitcoin data.
 /// Each property corresponds to a key element in the trading data (open, high, low, close, volume) for a specific time interval.
 struct HistoricalRate: Codable {
     let time: Int /// Unix timestamp indicating the start of the time interval for this data point.
@@ -40,15 +40,12 @@ struct HistoricalRate: Codable {
     let close: Double /// Closing trading price of Bitcoin at the end of the interval.
     let volumefrom: Double /// Total volume of Bitcoin traded from the opening to the closing of the interval.
     let volumeto: Double /// Total volume of the target currency traded in the same interval.
-
-    enum CodingKeys: String, CodingKey {
-        case time, high, low, open, close, volumefrom, volumeto
-    }
 }
 
-// MARK: - Testing: Sample Data 
+// MARK: - Testing: Sample Data
 
 extension HistoricalRate {
+    /// Provides a sample `HistoricalRate` for previewing and testing.
     static var example: HistoricalRate {
         return HistoricalRate(
             time: 1700611200,
@@ -62,8 +59,9 @@ extension HistoricalRate {
     }
 }
 
-
 extension HistoricalDataResponse {
+    /// Provides a sample `HistoricalDataResponse` for previewing and testing.
+    /// Decodes a hardcoded JSON string to simulate a typical API response.
     static var example: HistoricalDataResponse? {
         let jsonString = """
         {
@@ -240,4 +238,3 @@ extension HistoricalDataResponse {
         return try? JSONDecoder().decode(HistoricalDataResponse.self, from: jsonData)
     }
 }
-
