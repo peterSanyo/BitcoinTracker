@@ -5,10 +5,19 @@
 //  Created by Péter Sanyó on 05.12.23.
 //
 
+import CoreData
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(\.managedObjectContext) var moc
     @StateObject var viewModel = HomeViewModel()
+
+    @FetchRequest(
+        entity: StoredHistoricalRate.entity(),
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \StoredHistoricalRate.time, ascending: false)
+        ]
+    ) var historicalRates: FetchedResults<StoredHistoricalRate>
 
     var body: some View {
         VStack {
@@ -37,33 +46,29 @@ struct HomeView: View {
                 }
             }
 
-            if viewModel.isHistoricalDataLoading {
-                ProgressView()
-            } else if !viewModel.historicalData.isEmpty {
-                List(viewModel.historicalData, id: \.time) { data in
-                    HStack {
-                        Text("Date: \(convertTimestampToDate(TimeInterval(data.time)))")
-                        Spacer()
-                        Text("Open: \(data.open), Close: \(data.close)")
-                    }
-                }
+            if let mostRecentUpdate = historicalRates.first?.formattedUpdate {
+                Text("Last Updated: \(mostRecentUpdate)")
             } else {
-                Text("No historical data available.")
+                Text("Last Updated: Not available")
+            }
+
+            List(historicalRates, id: \.self) { rate in
+                VStack(alignment: .leading) {
+                    Text("Date: \(rate.dateOfTimestamp)")
+                    Text("Close: \(rate.close)")
+                    Text("Tendency: \(rate.dailyChangePercentage)%")
+                }
             }
         }
+        .padding()
         .onAppear {
+            viewModel.setManagedObjectContext(moc)
+//            viewModel.getCachedHistoricalData()
             viewModel.startFetchingPrice()
         }
         .onDisappear {
             viewModel.stopFetchingPrice()
         }
-    }
-
-    private func convertTimestampToDate(_ timestamp: TimeInterval) -> String {
-        let date = Date(timeIntervalSince1970: timestamp)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.string(from: date)
     }
 }
 

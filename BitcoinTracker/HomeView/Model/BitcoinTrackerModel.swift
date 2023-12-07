@@ -97,7 +97,7 @@ class BitcoinTrackerModel: ObservableObject {
     ///     }
     /// }
     /// ```
-    func fetchHistoricalBitcoinData(currency: ExchangeCurrency) async throws -> [HistoricalOHLCV] {
+    func fetchHistoricalBitcoinData(currency: ExchangeCurrency) async throws -> [HistoricalRate] {
         // Calculate Unix timestamp for 23:59 GMT of yesterday
         let calendar = Calendar.current
         let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
@@ -124,7 +124,6 @@ class BitcoinTrackerModel: ObservableObject {
 
         let decodedResponse = try JSONDecoder().decode(HistoricalDataResponse.self, from: data)
         
-        // Potential place for caching the data
         
         return decodedResponse.data.data
     }

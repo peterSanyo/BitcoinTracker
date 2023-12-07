@@ -22,7 +22,7 @@ struct HistoricalDataResponse: Codable {
     /// This separation is to ensure the correct mapping between the JSON response and the Swift structures.
     struct DataContainer: Codable {
         /// Array of historical OHLCV data points, each representing a time interval's trading information.
-        let data: [HistoricalOHLCV]
+        let data: [HistoricalRate]
 
         enum CodingKeys: String, CodingKey {
             case data = "Data"
@@ -32,7 +32,7 @@ struct HistoricalDataResponse: Codable {
 
 /// `HistoricalOHLCV` represents a single data point in the historical Bitcoin data.
 /// Each property corresponds to a key element in the trading data (open, high, low, close, volume) for a specific time interval.
-struct HistoricalOHLCV: Codable {
+struct HistoricalRate: Codable {
     let time: Int /// Unix timestamp indicating the start of the time interval for this data point.
     let high: Double /// Highest trading price of Bitcoin in the interval.
     let low: Double /// Lowest trading price of Bitcoin in the interval.
@@ -48,9 +48,9 @@ struct HistoricalOHLCV: Codable {
 
 // MARK: - Testing: Sample Data 
 
-extension HistoricalOHLCV {
-    static var example: HistoricalOHLCV {
-        return HistoricalOHLCV(
+extension HistoricalRate {
+    static var example: HistoricalRate {
+        return HistoricalRate(
             time: 1700611200,
             high: 34777.38,
             low: 32683.59,

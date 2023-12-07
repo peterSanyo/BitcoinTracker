@@ -10,7 +10,7 @@ import Foundation
 extension UserDefaults {
     private enum Keys {
         static let lastRate = "lastBitcoinRate"
-        static let lastHistoricalData = "lastHistoricalData"
+//        static let lastHistoricalData = "lastHistoricalData"
     }
 
     // Save last fetched Bitcoin rate
@@ -23,19 +23,19 @@ extension UserDefaults {
         return double(forKey: Keys.lastRate)
     }
 
-    // Save last fetched historical data
-    func setLastHistoricalData(_ data: [HistoricalOHLCV]) {
-        if let encoded = try? JSONEncoder().encode(data) {
-            set(encoded, forKey: Keys.lastHistoricalData)
-        }
-    }
-
-    // Retrieve cached historical data
-    func getLastHistoricalData() -> [HistoricalOHLCV]? {
-        if let data = data(forKey: Keys.lastHistoricalData) {
-            return try? JSONDecoder().decode([HistoricalOHLCV].self, from: data)
-        }
-        return nil
-    }
+//    // Save last fetched historical data
+//    func setLastHistoricalData(_ data: [HistoricalRate]) {
+//        if let encoded = try? JSONEncoder().encode(data) {
+//            set(encoded, forKey: Keys.lastHistoricalData)
+//        }
+//    }
+//
+//    // Retrieve cached historical data
+//    func getLastHistoricalData() -> [HistoricalRate]? {
+//        if let data = data(forKey: Keys.lastHistoricalData) {
+//            return try? JSONDecoder().decode([HistoricalRate].self, from: data)
+//        }
+//        return nil
+//    }
 }
 
