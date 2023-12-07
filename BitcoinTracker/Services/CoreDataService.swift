@@ -27,7 +27,7 @@ class CoreDataService {
         let now = Date()
         updateLastUpdateTimestamp(now, in: moc)
         
-        if moc.hasChanges {
+//        if moc.hasChanges {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = StoredHistoricalRate.fetchRequest()
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             do {
@@ -37,7 +37,7 @@ class CoreDataService {
             } catch {
                 print("Error in deleting old records: \(error)")
             }
-        }
+//        }
     }
     
     // MARK: - Historical Data

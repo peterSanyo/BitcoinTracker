@@ -11,7 +11,6 @@ import Foundation
 enum ExchangeCurrency: CaseIterable {
     case usd
     case eur
-    case cny
     case aud
 
     /// Returns the API code string for the currency.
@@ -21,8 +20,6 @@ enum ExchangeCurrency: CaseIterable {
             return "USD"
         case .eur:
             return "EUR"
-        case .cny:
-            return "CNY"
         case .aud:
             return "AUD"
         }

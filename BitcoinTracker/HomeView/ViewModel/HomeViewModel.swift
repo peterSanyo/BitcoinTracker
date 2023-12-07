@@ -25,7 +25,6 @@ class HomeViewModel: ObservableObject {
     
     @Published var errorMessage: String? = nil
     
-    
     @Published var currentRate: Double?
     @Published var selectedCurrency: ExchangeCurrency = .eur
     
@@ -113,5 +112,4 @@ class HomeViewModel: ObservableObject {
             self.isHistoricalDataLoading = false
         }
     }
-
 }
