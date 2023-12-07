@@ -25,7 +25,7 @@ public extension StoredHistoricalRate {
 
     // MARK: - Computed Properties
 
-    /// Computed property to convert unix timestamp time into `dd.mm.yy` format.
+    /// Formats the unix timestamp into a readable date string (dd.MM.yy).
     internal var dateOfTimestamp: String {
         let date = Date(timeIntervalSince1970: TimeInterval(time))
         let dateFormatter = DateFormatter()
@@ -33,14 +33,14 @@ public extension StoredHistoricalRate {
         return dateFormatter.string(from: date)
     }
 
-    /// Computed property to calculate the percentage change from open to close.
+    /// Calculates the daily percentage change from open to close values.
     internal var dailyChangePercentage: Double {
         guard open != 0 else { return 0.0 }
         let change = close - open
         return (change / open) * 100
     }
 
-    /// Computed property to format last update date.
+    /// Formats the last update date into a readable string (E, dd.MM.yy, HH:mm).
     internal var formattedUpdate: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "E, dd.MM.yy, HH:mm"

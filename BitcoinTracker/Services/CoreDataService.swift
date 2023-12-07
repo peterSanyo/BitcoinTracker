@@ -8,6 +8,7 @@
 import CoreData
 import Foundation
 
+/// Provides services for Core Data operations related to `StoredHistoricalRate`.
 class CoreDataService {
     private var moc: NSManagedObjectContext
     
@@ -15,19 +16,21 @@ class CoreDataService {
         self.moc = context
     }
     
+    /// Replaces the current historical rates with new data.
+    ///
+    /// updates the timeStamp of lastUpdate
+    /// If fetched data has changed: calls `saveNewHistoricalRates`
+    /// - Parameter rates: The new array of `HistoricalRate` objects to be saved.
     func replaceHistoricalRates(rates: [HistoricalRate]) {
-        
-        // Update Timestamp
         let now = Date()
         updateLastUpdateTimestamp(now, in: moc)
         
-        // If values have changed ... 
         if moc.hasChanges {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = StoredHistoricalRate.fetchRequest()
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             do {
                 try moc.execute(deleteRequest)
-                // After deleting, proceed to save new data
+                // After deleting, proceeds to save new data
                 saveNewHistoricalRates(rates)
             } catch {
                 print("Error in deleting old records: \(error)")
@@ -35,6 +38,8 @@ class CoreDataService {
         }
     }
     
+    /// Saves new historical rates into Core Data.
+    /// - Parameter rates: The array of `HistoricalRate` objects to be saved.
     private func saveNewHistoricalRates(_ rates: [HistoricalRate]) {
         let now = Date()
         rates.forEach { rateData in
@@ -48,7 +53,6 @@ class CoreDataService {
             newRate.volumefrom = rateData.volumefrom
             newRate.volumeto = rateData.volumeto
         }
-        
         do {
             try moc.save()
         } catch {
@@ -56,6 +60,10 @@ class CoreDataService {
         }
     }
     
+    /// Updates the last update timestamp for all `StoredHistoricalRate` records.
+    /// - Parameters:
+    ///   - date: The current date to set as the last update timestamp.
+    ///   - context: The `NSManagedObjectContext` to perform the update.
     private func updateLastUpdateTimestamp(_ date: Date, in context: NSManagedObjectContext) {
         let fetchRequest: NSFetchRequest<StoredHistoricalRate> = StoredHistoricalRate.fetchRequest()
         do {
@@ -66,33 +74,4 @@ class CoreDataService {
             print("Failed to update lastUpdate timestamp: \(error)")
         }
     }
-
-//    /// Saves a list of historical Bitcoin rates to Core Data.
-//    /// - Parameter rates: An array of `HistoricalRate` objects to be saved.
-//    func saveHistoricalRates(rates: [HistoricalRate]) {
-//        if moc.hasChanges {
-//            // Delete old data from Core Data before saving new data
-//            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = StoredHistoricalRate.fetchRequest()
-//            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-//            do {
-//                try moc.execute(deleteRequest)
-//            } catch {
-//                print("Error in deleting old records: \(error)")
-//            }
-//
-//            let now = Date()
-//            for rateData in data {
-//                let newRate = StoredHistoricalRate(context: moc)
-//                newRate.lastUpdate = now
-//                newRate.time = Int32(rateData.time)
-//                newRate.high = rateData.high
-//                newRate.low = rateData.low
-//                newRate.open = rateData.open
-//                newRate.close = rateData.close
-//                newRate.volumefrom = rateData.volumefrom
-//                newRate.volumeto = rateData.volumeto
-//            }
-//            try moc.save()
-//
-//    // Add more Core Data operations as needed
 }

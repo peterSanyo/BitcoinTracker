@@ -7,15 +7,19 @@
 
 import Foundation
 
+/// Service class responsible for fetching cryptocurrency data from an external API.
 class APIService {
-    /// Fetches the current Bitcoin price for a selected currency.
-    /// Documentation: https://min-api.cryptocompare.com/documentation?key=Price&cat=SingleSymbolPriceEndpoint
+    
+    /// Fetches the current Bitcoin price for a specified currency.
+    /// Makes a network request to the CryptoCompare API and retrieves the latest Bitcoin price in the given currency.
     ///
-    /// - Example Network Respond:  {"CNY":163338.95}
+    /// Documentation: https://min-api.cryptocompare.com/documentation?key=Price&cat=SingleSymbolPriceEndpoint
+    /// API Endpoint: https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=EUR&limit=14&toTs=1701863383
+    /// Example Response: {"CNY":163338.95}
     ///
     /// - Parameters:
-    ///   - currency: The currency for which to fetch the Bitcoin price.
-    ///   - completion: A completion handler with the result containing the price or an error.
+    ///   - currency: The currency for which to fetch the Bitcoin price (e.g., USD, EUR).
+    ///   - completion: A completion handler that returns the fetched price as a `Double` or an error.
     func fetchCurrentBitcoinPrice(currency: ExchangeCurrency, completion: @escaping (Result<Double, Error>) -> Void) {
         let urlString = APIConstants.baseUrlString + currency.currencyOption
         guard let url = URL(string: urlString) else {
@@ -23,23 +27,23 @@ class APIService {
             return
         }
         var request = URLRequest(url: url)
-        
+
         if let apiKey = ProcessInfo.processInfo.environment[APIConstants.apiKey] {
             request.addValue("Apikey \(apiKey)", forHTTPHeaderField: "Authorization")
         }
-        
+
         URLSession.shared.dataTask(with: request) { data, response, error in
-            
+
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
+
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                 completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
                 return
             }
-            
+
             do {
                 if let data = data {
                     let decodedResponse = try JSONDecoder().decode([String: Double].self, from: data)
@@ -56,19 +60,13 @@ class APIService {
             }
         }.resume()
     }
+
     
-    /// Using the Daily Pair OHLCV-API by CryptoCompare:
-    /// Link: https://min-api.cryptocompare.com/documentation?key=Historical&cat=dataHistoday
+    /// Fetches historical Bitcoin data
+    /// Asynchronously retrieves daily open, high, low, close, volumefrom, and volumeto data for Bitcoin over the past 14 days.
     ///
-    /// Fetches historical Bitcoin data in OHLCV format using `async/await`.
-    /// - Parameter currency: The currency symbol to convert Bitcoin into.
-    /// - Returns: An array of `HistoricalOHLCV` data.
-    /// - Throws: An error if the network request fails or data parsing fails.
-    ///
-    /// This function retrieves daily open, high, low, close, volumefrom, and volumeto data for Bitcoin.
-    /// The data is based on 00:00 GMT time, using `async/await`.
-    ///
-    /// The API endpoint used is `https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=13&toTs=<current_timestamp>`.
+    /// API Documentation: https://min-api.cryptocompare.com/documentation?key=FuturesIndices&cat=index_v1_historical_days
+    /// API Endpoint: https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=13&toTs=<current_timestamp>`.
     /// - `fsym`: parameter of the cryptocurrency symbol of interest
     /// - `tsym`: the currency symbol to convert into.
     /// - `limit`: amount of days tracked backwards. The API starts counting from 0, so setting this to 13 retrieves 14 days of data.
@@ -96,13 +94,20 @@ class APIService {
     ///     }
     /// }
     /// ```
+    ///
+    /// - Parameter currency: The currency symbol (e.g., USD, EUR) to convert Bitcoin data into referring to `ExchangeCurrency`.
+    /// - Returns: An array of `HistoricalRate` data representing daily Bitcoin values.
+    /// - Throws: An error if the network request fails or data parsing fails.
+    /// - Note: Uses `async/await` for network requests.
+    /// - API Endpoint: `https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym={currency}&limit=13&toTs={timestamp}`
+    ///   where `fsym` is the cryptocurrency symbol, `tsym` is the currency symbol, `limit` is the number of days, and `toTs` is the Unix timestamp.
     func fetchHistoricalBitcoinData(currency: ExchangeCurrency) async throws -> [HistoricalRate] {
         // Calculate Unix timestamp for 23:59 GMT of yesterday
         let calendar = Calendar.current
         let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
         let endOfYesterday = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: yesterday)!)
         let toTs = Int(endOfYesterday.timeIntervalSince1970) - 1
-        
+
         let amountOfDaysReturned = 13
 
         let urlString = "https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=\(currency.currencyOption)&limit=\(amountOfDaysReturned)&toTs=\(toTs)&api_key=\(APIKey)"
@@ -122,8 +127,7 @@ class APIService {
         }
 
         let decodedResponse = try JSONDecoder().decode(HistoricalDataResponse.self, from: data)
-        
-        
+
         return decodedResponse.data.data
     }
 }
@@ -134,4 +138,3 @@ enum APIConstants {
     static let baseUrlString = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms="
     static let apiKey = APIKey
 }
-

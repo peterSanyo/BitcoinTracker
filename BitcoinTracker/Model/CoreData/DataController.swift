@@ -8,6 +8,7 @@
 import CoreData
 import Foundation
 
+/// Manages the Core Data stack for the BitcoinTracker app.
 class DataController: ObservableObject {
     let container = NSPersistentContainer(name:"BitcoinTracker")
     
