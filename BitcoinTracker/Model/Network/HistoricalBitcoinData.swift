@@ -11,17 +11,15 @@ import Foundation
 /// This structure decodes the JSON response following the API's nested JSON format.
 struct HistoricalDataResponse: Codable {
     /// `DataContainer` serves as an intermediate layer to match the nested JSON structure.
-    /// It contains the array of `HistoricalOHLCV` data, representing individual OHLCV entries.
+    /// It contains the array of `HistoricalRate` data, representing individual entries.
     let data: DataContainer
 
     enum CodingKeys: String, CodingKey {
         case data = "Data"
     }
 
-    /// `DataContainer` holds the actual data points in the form of an array of `HistoricalOHLCV` structures.
-    /// This separation is to ensure the correct mapping between the JSON response and the Swift structures.
     struct DataContainer: Codable {
-        /// Array of historical OHLCV data points, each representing a time interval's trading information.
+        /// Array of historical  data points, each representing a time interval's trading information.
         let data: [HistoricalRate]
 
         enum CodingKeys: String, CodingKey {

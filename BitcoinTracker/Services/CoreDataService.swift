@@ -26,18 +26,16 @@ class CoreDataService {
     func replaceHistoricalRates(rates: [HistoricalRate]) {
         let now = Date()
         updateLastUpdateTimestamp(now, in: moc)
-        
-//        if moc.hasChanges {
-            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = StoredHistoricalRate.fetchRequest()
-            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-            do {
-                try moc.execute(deleteRequest)
-                // After deleting, proceeds to save new data
-                saveNewHistoricalRates(rates)
-            } catch {
-                print("Error in deleting old records: \(error)")
-            }
-//        }
+        // TODO: Check for duplicates
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = StoredHistoricalRate.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try moc.execute(deleteRequest)
+            // After deleting, proceeds to save new data
+            saveNewHistoricalRates(rates)
+        } catch {
+            print("Error in deleting old records: \(error)")
+        }
     }
     
     // MARK: - Historical Data
@@ -57,6 +55,7 @@ class CoreDataService {
             newRate.volumefrom = rateData.volumefrom
             newRate.volumeto = rateData.volumeto
         }
+        
         do {
             try moc.save()
         } catch {
