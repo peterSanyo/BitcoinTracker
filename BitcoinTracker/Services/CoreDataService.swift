@@ -29,11 +29,11 @@ class CoreDataService {
             let newTimestamps = Set(rates.map { Int32($0.time) })
 
             if existingTimestamps != newTimestamps {
-                // Timestamps differ, update Core Data
                 deleteAllHistoricalRates()
                 saveNewHistoricalRates(rates)
             }
-            // If they are the same, do nothing.
+            // Always update the timestamp, regardless of whether data changed
+            updateLastUpdateTimestamp(Date(), in: moc)
         } catch {
             print("Error in fetching existing timestamps: \(error)")
         }
