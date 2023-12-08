@@ -45,6 +45,7 @@ struct HomeView: View {
             }
             .padding()
             .onAppear {
+                viewModel.fetchCurrentBitcoinPrice()
                 viewModel.setManagedObjectContext(moc)
                 viewModel.startFetchingPrice()
             }

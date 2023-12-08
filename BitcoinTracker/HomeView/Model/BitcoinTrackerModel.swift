@@ -9,7 +9,6 @@ import CoreData
 import Foundation
 
 /// model for handling the logic of cryptocurrency data retrieval.
-
 struct BitcoinTrackerModel {
     private let apiService: APIService
     private let coreDataService: CoreDataService

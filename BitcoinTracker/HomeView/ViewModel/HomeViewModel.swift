@@ -95,19 +95,25 @@ class HomeViewModel: ObservableObject {
     // MARK: - Fetching Historical Data
     
     @Published var isHistoricalDataLoading: Bool = false
-    
+
     /// Asynchronously fetches historical Bitcoin data and updates Core Data.
     /// Shows loading state while fetching and updates the `isHistoricalDataLoading` property.
     func fetchHistoricalData() async {
-        isHistoricalDataLoading = true
+        DispatchQueue.main.async {
+            self.isHistoricalDataLoading = true
+        }
+        
         do {
             let data = try await bitcoinTrackerModel.fetchHistoricalBitcoinData(currency: selectedCurrency)
-            bitcoinTrackerModel.replaceHistoricalRates(rates: data)
+            DispatchQueue.main.async {
+                self.bitcoinTrackerModel.replaceHistoricalRates(rates: data)
+            }
         } catch {
             DispatchQueue.main.async {
                 self.errorMessage = error.localizedDescription
             }
         }
+        
         DispatchQueue.main.async {
             self.isHistoricalDataLoading = false
         }
