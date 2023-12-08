@@ -108,7 +108,7 @@ struct FlippingNumberView: View {
     }
 
     private var numberOfFlips: Double {
-        shouldFlip ? Double.random(in: 3...5) * 360 : 0
+        shouldFlip ? Double(1) * 360 : 0
     }
 
     private var animationDuration: Double {

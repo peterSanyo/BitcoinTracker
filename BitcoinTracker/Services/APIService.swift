@@ -78,25 +78,6 @@ class APIService {
     /// Note: The `time` property in the response is a Unix timestamp, representing
     /// the number of seconds that have elapsed since January 1, 1970 (midnight UTC/GMT).
     /// Example response:
-    /// ```
-    /// {
-    ///     "Response": "Success",
-    ///     "Data": {
-    ///         "Data": [
-    ///             {
-    ///                 "time": 1700611200,
-    ///                 "high": 37866.63,
-    ///                 "low": 35656.41,
-    ///                 "open": 35758.72,
-    ///                 "close": 37424.2,
-    ///                 "volumefrom": 36262.61,
-    ///                 "volumeto": 1335151412.8
-    ///             },
-    ///             // More data...
-    ///         ]
-    ///     }
-    /// }
-    /// ```
     ///
     /// - Parameter currency: The currency symbol (e.g., USD, EUR) to convert Bitcoin data into referring to `ExchangeCurrency`.
     /// - Returns: An array of `HistoricalRate` data representing daily Bitcoin values.
