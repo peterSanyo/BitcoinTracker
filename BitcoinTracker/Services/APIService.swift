@@ -9,7 +9,6 @@ import Foundation
 
 /// Service class responsible for fetching cryptocurrency data from an external API.
 class APIService {
-    
     // MARK: - Current Bitcoin Price
 
     /// Fetches the current Bitcoin price for a specified currency.
@@ -91,12 +90,21 @@ class APIService {
 
         let amountOfDaysReturned = 13
 
-        let urlString = "https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=\(currency.currencyOption)&limit=\(amountOfDaysReturned)&toTs=\(toTs)&api_key=\(APIKey)"
-        print("urlString: \(urlString) ")
+        // Define API endpoint and parameters
+        let endpoint = "/data/v2/histoday"
+        let parameters: [String: Any] = [
+            "fsym": "BTC",
+            "tsym": currency.currencyOption,
+            "limit": amountOfDaysReturned,
+            "toTs": toTs,
+            "api_key": APIKey
+        ]
 
-        guard let url = URL(string: urlString) else {
+        // Use the helper function to create the URL
+        guard let url = createBaseURL(for: endpoint, parameters: parameters) else {
             throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
+        print("URL String: \(url.absoluteString)")
 
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
@@ -110,6 +118,20 @@ class APIService {
         let decodedResponse = try JSONDecoder().decode(HistoricalDataResponse.self, from: data)
 
         return decodedResponse.data.data
+    }
+
+
+    func createBaseURL(for endpoint: String, parameters: [String: Any]) -> URL? {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "min-api.cryptocompare.com"
+        components.path = endpoint
+
+        components.queryItems = parameters.map { key, value in
+            URLQueryItem(name: key, value: "\(value)")
+        }
+
+        return components.url
     }
 }
 
