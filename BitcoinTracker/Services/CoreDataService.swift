@@ -16,21 +16,21 @@ class CoreDataService {
         self.moc = context
     }
 
-    // MARK: - Current Bitcoin Price
+    // MARK: - Replacing Historical Data
 
-    /// Replaces the current historical rates with new data.
+    /// Replaces the current historical rates with newly fetched  data.
     ///
     /// updates the timeStamp of lastUpdate
     /// If fetched data has changed: calls `saveNewHistoricalRates`
     /// - Parameter rates: The new array of `HistoricalRate` objects to be saved.
-    func replaceHistoricalRates(rates: [HistoricalRate]) {
+    func replaceHistoricalRates(rates: [HistoricalRate], for currency: ExchangeCurrency) {
         do {
-            let existingTimestamps = try fetchExistingTimestamps()
+            let existingTimestamps = try fetchExistingTimestamps(for: currency.currencyOption)
             let newTimestamps = Set(rates.map { Int32($0.time) })
 
             if existingTimestamps != newTimestamps {
-                deleteAllHistoricalRates()
-                saveNewHistoricalRates(rates)
+                deleteHistoricalRates(for: currency.currencyOption)
+                saveNewHistoricalRates(rates, for: currency)
             }
             // Always update the timestamp, regardless of whether data changed
             updateLastUpdateTimestamp(Date(), in: moc)
@@ -39,27 +39,27 @@ class CoreDataService {
         }
     }
 
-    // MARK: - Historical Data
+    // MARK: - Historical Data Methods
 
-    private func fetchExistingTimestamps() throws -> Set<Int32> {
-        let fetchRequest: NSFetchRequest<StoredHistoricalRate> = StoredHistoricalRate.fetchRequest()
+    private func fetchExistingTimestamps(for currencyOption: String) throws -> Set<Int32> {
+        let fetchRequest = createFetchRequest(for: currencyOption)
         let existingRates = try moc.fetch(fetchRequest)
         return Set(existingRates.map { $0.time })
     }
 
-    private func deleteAllHistoricalRates() {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = StoredHistoricalRate.fetchRequest()
+    private func deleteHistoricalRates(for currencyOption: String) {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = createFetchRequest(for: currencyOption) as! NSFetchRequest<NSFetchRequestResult>
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         do {
             try moc.execute(deleteRequest)
         } catch {
-            print("Error deleting historical rates: \(error)")
+            print("Error deleting historical rates for \(currencyOption): \(error)")
         }
     }
 
-    /// Saves new historical rates into Core Data, if data differs.
+    /// Saves new historical rates into Core Data
     /// - Parameter rates: The array of `HistoricalRate` objects to be saved.
-    private func saveNewHistoricalRates(_ rates: [HistoricalRate]) {
+    func saveNewHistoricalRates(_ rates: [HistoricalRate], for currency: ExchangeCurrency) {
         rates.forEach { rateData in
             let newRate = StoredHistoricalRate(context: moc)
             newRate.time = Int32(rateData.time)
@@ -70,10 +70,12 @@ class CoreDataService {
             newRate.volumefrom = rateData.volumefrom
             newRate.volumeto = rateData.volumeto
             newRate.lastUpdate = Date()
+            newRate.currency = currency.currencyOption
         }
 
         do {
             try moc.save()
+            printAllStoredHistoricalRates()
         } catch {
             print("Error saving historical rates: \(error)")
         }
@@ -88,9 +90,32 @@ class CoreDataService {
         do {
             let results = try context.fetch(fetchRequest)
             results.forEach { $0.lastUpdate = date }
-            try context.save()
+
+            if context.hasChanges {
+                try context.save()
+            }
         } catch {
             print("Failed to update lastUpdate timestamp: \(error)")
+        }
+    }
+
+    // MARK: - Utility Methods
+
+    private func createFetchRequest(for currencyOption: String) -> NSFetchRequest<StoredHistoricalRate> {
+        let fetchRequest: NSFetchRequest<StoredHistoricalRate> = StoredHistoricalRate.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "currency == %@", currencyOption)
+        return fetchRequest
+    }
+
+    // MARK: - Debugging:
+
+    func printAllStoredHistoricalRates() {
+        let fetchRequest: NSFetchRequest<StoredHistoricalRate> = StoredHistoricalRate.fetchRequest()
+        do {
+            let results = try moc.fetch(fetchRequest)
+            results.forEach { print("\($0)") }
+        } catch {
+            print("Error fetching stored historical rates for debugging: \(error)")
         }
     }
 }

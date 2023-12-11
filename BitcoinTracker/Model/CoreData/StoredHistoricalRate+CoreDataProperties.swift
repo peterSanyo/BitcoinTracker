@@ -2,27 +2,30 @@
 //  StoredHistoricalRate+CoreDataProperties.swift
 //  BitcoinTracker
 //
-//  Created by Péter Sanyó on 07.12.23.
+//  Created by Péter Sanyó on 11.12.23.
 //
 //
 
-import CoreData
 import Foundation
+import CoreData
 
-public extension StoredHistoricalRate {
-    @nonobjc class func fetchRequest() -> NSFetchRequest<StoredHistoricalRate> {
+
+extension StoredHistoricalRate {
+
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<StoredHistoricalRate> {
         return NSFetchRequest<StoredHistoricalRate>(entityName: "StoredHistoricalRate")
     }
 
-    @NSManaged var lastUpdate: Date
-    @NSManaged var time: Int32
-    @NSManaged var high: Double
-    @NSManaged var low: Double
-    @NSManaged var open: Double
-    @NSManaged var close: Double
-    @NSManaged var volumefrom: Double
-    @NSManaged var volumeto: Double
-
+    @NSManaged public var close: Double
+    @NSManaged public var high: Double
+    @NSManaged public var lastUpdate: Date
+    @NSManaged public var low: Double
+    @NSManaged public var open: Double
+    @NSManaged public var time: Int32
+    @NSManaged public var volumefrom: Double
+    @NSManaged public var volumeto: Double
+    @NSManaged public var currency: String
+    
     // MARK: - Computed Properties
 
     /// Formats the unix timestamp into a readable date string (dd.MM.yy).
@@ -41,11 +44,14 @@ public extension StoredHistoricalRate {
     }
 
     /// Formats the last update date into a readable string (E, dd.MM.yy, HH:mm).
-    internal var formattedUpdate: String {
+    internal var formattedWrappedUpdate: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "E, dd.MM.yy, HH:mm"
         return dateFormatter.string(from: lastUpdate)
     }
+
 }
 
-extension StoredHistoricalRate: Identifiable {}
+extension StoredHistoricalRate : Identifiable {
+
+}
