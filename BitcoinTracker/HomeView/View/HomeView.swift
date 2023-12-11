@@ -11,7 +11,7 @@ import SwiftUI
 struct HomeView: View {
     @Environment(\.managedObjectContext) var moc
     @StateObject var viewModel: HomeViewModel
-    
+
     init(viewModel: HomeViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -29,7 +29,6 @@ struct HomeView: View {
                 .ignoresSafeArea()
             
             VStack {
-               
                 CurrentBitcoinView(selectedCurrency: $viewModel.selectedCurrency, currentRate: $viewModel.currentRate, errorMessage: $viewModel.errorMessage)
                 
                 HStack {
@@ -38,16 +37,25 @@ struct HomeView: View {
                     fetchButton
                 }
                 ScrollView {
-                    ForEach(historicalRates, id: \.self) { rate in
+                    ForEach(viewModel.historicalRates, id: \.self) { rate in
                         BitcoinRateView(rate: rate)
                     }
                 }
             }
             .padding()
             .onAppear {
-                viewModel.fetchCurrentBitcoinPrice()
                 viewModel.setManagedObjectContext(moc)
+                viewModel.fetchCurrentBitcoinPrice()
+                Task {
+                    await viewModel.fetchHistoricalData()
+                }
+                viewModel.updateTimestampAndRefreshData()
                 viewModel.startFetchingPrice()
+            }
+            .onChange(of: viewModel.selectedCurrency) { _ in
+                Task {
+                    await viewModel.fetchHistoricalData()
+                }
             }
             .onDisappear {
                 viewModel.stopFetchingPrice()
@@ -58,16 +66,10 @@ struct HomeView: View {
     
     var lastUpdatedTimeStamp: some View {
         VStack(alignment: .leading) {
-            Text("Last Updated:")
+            Text("Last Update:")
                 .font(.caption)
-            Group {
-                if let mostRecentUpdate = historicalRates.first?.formattedUpdate {
-                    Text(mostRecentUpdate)
-                } else {
-                    Text("Last Updated: Not available")
-                }
-            }
-            .bold()
+            Text(viewModel.lastUpdated?.formatted() ?? "")
+                .bold()
         }
         .foregroundColor(.white)
     }
@@ -75,19 +77,17 @@ struct HomeView: View {
     var fetchButton: some View {
         Group {
             Button {
-                Task {
-                    await viewModel.fetchHistoricalData()
-                }
+                viewModel.updateTimestampAndRefreshData()
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 8)
                         .strokeBorder(lineWidth: 2)
-                    Text("Reload Data")
+                    Text("Load Data")
                 }
                 .foregroundColor(.white)
-                .frame(maxHeight: 44)
             }
         }
+        .frame(maxWidth: 120, maxHeight: 44)
         .padding(.leading, 50)
     }
     
@@ -124,5 +124,3 @@ struct HomeView: View {
         .bold()
     }
 }
-
-

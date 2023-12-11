@@ -2,7 +2,7 @@
 //  StoredHistoricalRate+CoreDataClass.swift
 //  BitcoinTracker
 //
-//  Created by Péter Sanyó on 07.12.23.
+//  Created by Péter Sanyó on 11.12.23.
 //
 //
 
