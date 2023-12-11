@@ -31,27 +31,13 @@ struct CurrentBitcoinView: View {
     private var rateDisplay: some View {
         Group {
             if let price = currentRate {
-                rateView(for: price)
+                RateView(price: price, previousRate: previousRate)
             } else if let message = errorMessage {
                 Text("Error: \(message)")
             } else {
                 Text("No data available.")
             }
         }
-    }
-
-    private func rateView(for price: Double) -> some View {
-        let formattedPrice = formatPrice(price)
-        let previousFormattedPrice = formatPrice(previousRate)
-
-        return HStack(alignment: .bottom, spacing: 2) {
-            PriceComponentsView(components: formattedPrice, previousComponents: previousFormattedPrice)
-        }
-    }
-
-    private func formatPrice(_ price: Double?) -> [[Character]] {
-        guard let price = price else { return [[" "], [" "]] }
-        return String(format: "%.2f", price).components(separatedBy: ".").map { Array($0) }
     }
 
     private var currencyPicker: some View {
@@ -61,6 +47,25 @@ struct CurrentBitcoinView: View {
             }
         }
         .pickerStyle(SegmentedPickerStyle())
+    }
+}
+
+struct RateView: View {
+    let price: Double
+    let previousRate: Double?
+
+    var body: some View {
+        let components = formatPrice(price)
+        let previousComponents = formatPrice(previousRate)
+
+        return HStack(alignment: .bottom, spacing: 2) {
+            PriceComponentsView(components: components, previousComponents: previousComponents)
+        }
+    }
+
+    private func formatPrice(_ price: Double?) -> [[Character]] {
+        guard let price = price else { return [[" "], [" "]] }
+        return String(format: "%.2f", price).split(separator: ".").map { Array($0) }
     }
 }
 
@@ -82,11 +87,9 @@ struct PriceComponentsView: View {
                         digit: digit,
                         previousDigit: Int(String(previousChar)) ?? -1
                     )
+                } else if char == "." {
+                    DecimalPointView()
                 }
-            }
-
-            if index == 0 {
-                DecimalPointView()
             }
         }
     }
@@ -112,7 +115,7 @@ struct FlippingNumberView: View {
     }
 
     private var animationDuration: Double {
-        Double.random(in: 0.5...1.2) 
+        Double.random(in: 0.5...1.2)
     }
 
     var body: some View {
@@ -135,7 +138,6 @@ struct FlippingNumberView: View {
         .foregroundColor(.white)
     }
 }
-
 struct CurrentBitcoinRateInterface_Previews: PreviewProvider {
     @State static var selectedCurrency = ExchangeCurrency.usd
     @State static var currentRate: Double? = 42000.32
