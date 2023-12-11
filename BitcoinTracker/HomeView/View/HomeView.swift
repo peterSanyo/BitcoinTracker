@@ -67,7 +67,7 @@ struct HomeView: View {
         VStack(alignment: .leading) {
             Text("Last Update:")
                 .font(.caption)
-            Text(viewModel.lastUpdated?.formatted() ?? "")
+            Text(viewModel.formattedLastUpdated)
                 .bold()
         }
         .foregroundColor(.white)

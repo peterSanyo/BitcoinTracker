@@ -88,15 +88,13 @@ struct PriceComponentsView: View {
                         previousDigit: Int(String(previousChar)) ?? -1
                     )
                 } else if char == "." {
-                    DecimalPointView()
+                    decimalPoints
                 }
             }
         }
     }
-}
 
-struct DecimalPointView: View {
-    var body: some View {
+    var decimalPoints: some View {
         Text(".")
             .font(.system(size: 30, weight: .bold))
     }
@@ -115,7 +113,7 @@ struct FlippingNumberView: View {
     }
 
     private var animationDuration: Double {
-        Double.random(in: 0.5...1.2)
+        Double.random(in: 0.5 ... 1.2)
     }
 
     var body: some View {
@@ -138,6 +136,7 @@ struct FlippingNumberView: View {
         .foregroundColor(.white)
     }
 }
+
 struct CurrentBitcoinRateInterface_Previews: PreviewProvider {
     @State static var selectedCurrency = ExchangeCurrency.usd
     @State static var currentRate: Double? = 42000.32

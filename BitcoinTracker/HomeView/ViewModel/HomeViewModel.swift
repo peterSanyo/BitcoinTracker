@@ -117,6 +117,14 @@ class HomeViewModel: ObservableObject {
             }
         }
     }
+    
+    var formattedLastUpdated: String {
+        guard let lastUpdated = lastUpdated else { return "Not available" }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE, dd.MMM.yy, HH:mm"
+        formatter.timeZone = TimeZone(abbreviation: "CET") // Central European Time
+        return formatter.string(from: lastUpdated)
+    }
 
     // MARK: - Feature: Currency Change
 
