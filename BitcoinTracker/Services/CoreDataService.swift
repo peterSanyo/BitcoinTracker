@@ -32,8 +32,6 @@ class CoreDataService {
                 deleteHistoricalRates(for: currency.currencyOption)
                 saveNewHistoricalRates(rates, for: currency)
             }
-            // Always update the timestamp, regardless of whether data changed
-            updateLastUpdateTimestamp(Date(), in: moc)
         } catch {
             print("Error in fetching existing timestamps: \(error)")
         }
@@ -78,24 +76,6 @@ class CoreDataService {
             printAllStoredHistoricalRates()
         } catch {
             print("Error saving historical rates: \(error)")
-        }
-    }
-
-    /// Updates the  update timestamp for all `StoredHistoricalRate` records.
-    /// - Parameters:
-    ///   - date: The current date to set as the last update timestamp.
-    ///   - context: The `NSManagedObjectContext` to perform the update.
-    private func updateLastUpdateTimestamp(_ date: Date, in context: NSManagedObjectContext) {
-        let fetchRequest: NSFetchRequest<StoredHistoricalRate> = StoredHistoricalRate.fetchRequest()
-        do {
-            let results = try context.fetch(fetchRequest)
-            results.forEach { $0.lastUpdate = date }
-
-            if context.hasChanges {
-                try context.save()
-            }
-        } catch {
-            print("Failed to update lastUpdate timestamp: \(error)")
         }
     }
 

@@ -32,22 +32,6 @@ class HomeViewModel: ObservableObject {
 
     // MARK: - Checking Network availability
 
-    // Checks for network availability
-    func isNetworkAvailable() -> Bool {
-        let monitor = NWPathMonitor()
-        var isAvailable = false
-        monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                isAvailable = true
-            } else {
-                isAvailable = false
-            }
-        }
-        let queue = DispatchQueue(label: "NetworkMonitor")
-        monitor.start(queue: queue)
-        return isAvailable
-    }
-
     // MARK: -  Continous updates of current exchange rate in UserDefaults
 
     /// Fetches the current Bitcoin price and updates the `currentRate`.
@@ -73,7 +57,7 @@ class HomeViewModel: ObservableObject {
             }
         }
     }
-    
+
     //
 
     /// Retrieves the cached Bitcoin rate from user defaults.
@@ -84,6 +68,7 @@ class HomeViewModel: ObservableObject {
     }
 
     // MARK: -  Feature: Continous Updates
+
     private var priceUpdateSubscription: AnyCancellable?
 
     /// Starts a timer to continuously fetch the current Bitcoin exchange rate.
@@ -91,7 +76,7 @@ class HomeViewModel: ObservableObject {
     func startFetchingPrice() {
         priceUpdateSubscription = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
-            .sink { [weak self] _ in
+            .sink { [weak self] _ in // weak self to prevent strong referenc cycle (ARC)
                 print("Tick")
                 self?.fetchCurrentBitcoinPrice()
             }
@@ -104,8 +89,9 @@ class HomeViewModel: ObservableObject {
         print("Timer cancelled")
         priceUpdateSubscription = nil
     }
-    
+
     // MARK: - Timestamp Update
+
     @Published var lastUpdated: Date?
 
     /// Updates the last update timestamp and refreshes the historical rates.
@@ -113,11 +99,11 @@ class HomeViewModel: ObservableObject {
         Task {
             await fetchHistoricalData()
             DispatchQueue.main.async {
-                self.lastUpdated = Date() 
+                self.lastUpdated = Date()
             }
         }
     }
-    
+
     var formattedLastUpdated: String {
         guard let lastUpdated = lastUpdated else { return "Not available" }
         let formatter = DateFormatter()
@@ -127,8 +113,6 @@ class HomeViewModel: ObservableObject {
     }
 
     // MARK: - Feature: Currency Change
-
-    @Published var historicalRates: [StoredHistoricalRate] = []
 
     /// Changes the selected currency and triggers fetching of the latest Bitcoin rate and historical data.
     /// - Parameter newCurrency: The new currency to fetch the rate for.
@@ -143,6 +127,7 @@ class HomeViewModel: ObservableObject {
 
     // MARK: - Fetching Historical Data with CoreData
 
+    @Published var historicalRates: [StoredHistoricalRate] = []
     @Published var isHistoricalDataLoading: Bool = false
 
     /// Asynchronously fetches historical Bitcoin data based on the current network availability.
@@ -158,24 +143,22 @@ class HomeViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.isHistoricalDataLoading = true
         }
-        if isNetworkAvailable() {
-            do {
-                let rates = try await bitcoinTrackerModel.fetchHistoricalBitcoinData(currency: selectedCurrency)
-                await replaceHistoricalRates(rates: rates)
-                DispatchQueue.main.async {
-                    self.historicalRates = self.fetchStoredHistoricalRates()
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    self.errorMessage = error.localizedDescription
-                    self.isHistoricalDataLoading = false
-                }
-            }
-        } else {
+        do {
+            let rates = try await bitcoinTrackerModel.fetchHistoricalBitcoinData(currency: selectedCurrency)
+            await replaceHistoricalRates(rates: rates)
             DispatchQueue.main.async {
                 self.historicalRates = self.fetchStoredHistoricalRates()
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = error.localizedDescription
                 self.isHistoricalDataLoading = false
             }
+        }
+
+        DispatchQueue.main.async {
+            self.historicalRates = self.fetchStoredHistoricalRates()
+            self.isHistoricalDataLoading = false
         }
     }
 
@@ -201,8 +184,6 @@ class HomeViewModel: ObservableObject {
     private func replaceHistoricalRates(rates: [HistoricalRate]) async {
         bitcoinTrackerModel.replaceHistoricalRates(rates: rates, for: selectedCurrency)
     }
-
-    
 
     // MARK: - Debugging
 

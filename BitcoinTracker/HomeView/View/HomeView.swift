@@ -38,9 +38,11 @@ struct HomeView: View {
 
     private var content: some View {
         VStack {
-            CurrentBitcoinView(selectedCurrency: $viewModel.selectedCurrency,
-                               currentRate: $viewModel.currentRate,
-                               errorMessage: $viewModel.errorMessage)
+            CurrentBitcoinView(
+                selectedCurrency: $viewModel.selectedCurrency,
+                currentRate: $viewModel.currentRate,
+                errorMessage: $viewModel.errorMessage
+            )
             historicHeader
             historicDataList
         }
@@ -111,7 +113,7 @@ struct HomeView: View {
         .padding(2)
     }
 
-    func TendencyView(changePercentage: Double) -> some View {
+    private func TendencyView(changePercentage: Double) -> some View {
         HStack {
             Text("\(changePercentage >= 0 ? "+" : "")\(changePercentage.formatted(.number.precision(.fractionLength(1))))%")
 

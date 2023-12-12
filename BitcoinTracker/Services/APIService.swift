@@ -28,23 +28,18 @@ class APIService {
             return
         }
         var request = URLRequest(url: url)
-
         if let apiKey = ProcessInfo.processInfo.environment[APIConstants.apiKey] {
             request.addValue("Apikey \(apiKey)", forHTTPHeaderField: "Authorization")
         }
-
         URLSession.shared.dataTask(with: request) { data, response, error in
-
             if let error = error {
                 completion(.failure(error))
                 return
             }
-
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                 completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
                 return
             }
-
             do {
                 if let data = data {
                     let decodedResponse = try JSONDecoder().decode([String: Double].self, from: data)
@@ -100,7 +95,7 @@ class APIService {
             "api_key": APIKey
         ]
 
-        // Use the helper function to create the URL
+        // Use helper function to create the URL
         guard let url = createBaseURL(for: endpoint, parameters: parameters) else {
             throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
@@ -119,7 +114,6 @@ class APIService {
 
         return decodedResponse.data.data
     }
-
 
     func createBaseURL(for endpoint: String, parameters: [String: Any]) -> URL? {
         var components = URLComponents()
