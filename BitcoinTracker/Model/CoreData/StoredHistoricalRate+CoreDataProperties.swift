@@ -42,14 +42,6 @@ extension StoredHistoricalRate {
         let change = close - open
         return (change / open) * 100
     }
-
-    /// Formats the last update date into a readable string (E, dd.MM.yy, HH:mm).
-    internal var formattedWrappedUpdate: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E, dd.MM.yy, HH:mm"
-        return dateFormatter.string(from: lastUpdate)
-    }
-
 }
 
 extension StoredHistoricalRate : Identifiable {
