@@ -60,7 +60,7 @@ struct HomeView: View {
     private var historicDataList: some View {
         ScrollView {
             ForEach(viewModel.historicalRates, id: \.self) { rate in
-                BitcoinRateView(rate: rate)
+                bitcoinRateView(rate: rate)
             }
         }
     }
@@ -92,7 +92,7 @@ struct HomeView: View {
         .padding(.leading, 50)
     }
 
-    private func BitcoinRateView(rate: StoredHistoricalRate) -> some View {
+    private func bitcoinRateView(rate: StoredHistoricalRate) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .strokeBorder(Color.white, lineWidth: 2)
@@ -105,7 +105,7 @@ struct HomeView: View {
                         .font(.caption)
                 }
                 Spacer()
-                TendencyView(changePercentage: rate.dailyChangePercentage)
+                tendencyView(changePercentage: rate.dailyChangePercentage)
             }
             .padding()
         }
@@ -113,7 +113,7 @@ struct HomeView: View {
         .padding(2)
     }
 
-    private func TendencyView(changePercentage: Double) -> some View {
+    private func tendencyView(changePercentage: Double) -> some View {
         HStack {
             Text("\(changePercentage >= 0 ? "+" : "")\(changePercentage.formatted(.number.precision(.fractionLength(1))))%")
 
