@@ -79,9 +79,9 @@ class APIService {
     func fetchHistoricalBitcoinData(currency: ExchangeCurrency) async throws -> [HistoricalRate] {
         // Calculate Unix timestamp for 23:59 GMT of yesterday
         let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
-        let endOfYesterday = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: yesterday)!)
-        let toTs = Int(endOfYesterday.timeIntervalSince1970) - 1
+        let startOfToday = calendar.startOfDay(for: Date())
+        let endOfYesterday = calendar.date(byAdding: .minute, value: -1, to: startOfToday)!
+        let toTs = Int(endOfYesterday.timeIntervalSince1970)
 
         let amountOfDaysReturned = 13
 
